@@ -1,26 +1,24 @@
 ﻿#include <iostream>
 #include <random>
 
-struct Node {
-    int val;
-    int priority;
-    int size;
-    int sum;
-    Node* left;
-    Node* right;
-
-    Node(int val = 0, Node* left = nullptr, Node* right = nullptr) : val(val), left(left), right(right) {
-        priority = rand();
-        size = 1;
-        sum = val;
-    }
-};
-
 class Treap {
-public:
-    Node* head;
 
-    Treap() : head(nullptr) {}
+private:
+    class Node {
+    public:
+        int val;
+        int priority;
+        int size;
+        int sum;
+        Node* left;
+        Node* right;
+
+        Node(int val = 0, Node* left = nullptr, Node* right = nullptr) : val(val), left(left), right(right) {
+            priority = rand();
+            size = 1;
+            sum = val;
+        }
+    };
 
     int get_size(Node* t) {
         return t ? t->size : 0;
@@ -28,33 +26,6 @@ public:
 
     int get_sum(Node* t) {
         return t ? t->sum : 0;
-    }
-
-    void insert(int val, int pos) {
-        Node* l, * r;
-        split_by_size(head, pos - 1, l, r);
-        Node* new_node = new Node(val);
-        Node* t1 = merge(l, new_node);
-        head = merge(t1, r);
-    }
-
-    void erase(Node* t, int pos) {
-        Node* l, * r;
-        split_by_size(t, pos - 1, l, r);
-        Node* e, * rr;
-        split_by_size(r, 1, e, rr);
-        head = merge(l, rr);
-    }
-
-    int summa(int _from, int _to) {
-        if (_from < 1 || _from > head->size || _to > head->size) {
-            throw std::out_of_range("Index out of range!");
-        }
-        Node* l, * r;
-        split_by_size(head, _from - 1, l, r);
-        Node* rl, * rr;
-        split_by_size(r, _to - _from + 1, rl, rr);
-        return rl->sum;
     }
 
     void split_by_size(Node* t, int size, Node*& left, Node*& right) {
@@ -99,6 +70,40 @@ public:
             return t2;
         }
     }
+
+public:
+    Node* head;
+
+    Treap() : head(nullptr) {}
+
+
+    void insert(int val, int pos) {
+        Node* l, * r;
+        split_by_size(head, pos - 1, l, r);
+        Node* new_node = new Node(val);
+        Node* t1 = merge(l, new_node);
+        head = merge(t1, r);
+    }
+
+    void erase(Node* t, int pos) {
+        Node* l, * r;
+        split_by_size(t, pos - 1, l, r);
+        Node* e, * rr;
+        split_by_size(r, 1, e, rr);
+        head = merge(l, rr);
+    }
+
+    int summa(int _from, int _to) {
+        if (_from < 1 || _from > head->size || _to > head->size) {
+            throw std::out_of_range("Index out of range!");
+        }
+        Node* l, * r;
+        split_by_size(head, _from - 1, l, r);
+        Node* rl, * rr;
+        split_by_size(r, _to - _from + 1, rl, rr);
+        return rl->sum;
+    }
+
 
     void print_bst(Node* root) {
         if (!root) {
