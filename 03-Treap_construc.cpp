@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <random>
 
 class Treap {
@@ -81,6 +81,24 @@ public:
 
     Treap() : head(nullptr) {}
 
+    // Copy operator
+    Treap(const Treap& other) : head(nullptr) {
+        if (other.head) {
+            head = new Node(*other.head);
+        }
+    }
+
+    // Assignment operator
+    Treap& operator=(const Treap& other) {
+        if (this != &other) {
+            delete head;
+            head = nullptr;
+            if (other.head) {
+                head = new Node(*other.head);
+            }
+        }
+        return *this;
+    }
 
     void insert(int val, int pos) {
         Node* l, * r;
