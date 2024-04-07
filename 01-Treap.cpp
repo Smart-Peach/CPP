@@ -6,22 +6,16 @@ class Treap {
 private:
     struct Node {
         int val = 0;
-        int priority = rand() % ((int)pow(2,32) - 1);;
+        int priority = rand() % ((int)pow(2,32) - 1);
         int size = 1;
         int sum = val;
         Node* left = nullptr;
         Node* right = nullptr;
 
-        // Node(int val = 0, Node* left = nullptr, Node* right = nullptr) : val(val), left(left), right(right) {
-        //     priority = rand() % ((int)pow(2,32) - 1);
-        //     size = 1;
-        //     sum = val;
-        // }
-
-        // ~Node() {
-        //     delete left;
-        //     delete right;
-        // }
+        ~Node() {
+            delete left;
+            delete right;
+        }
     };
 
     int get_size(Node* t) {
@@ -84,9 +78,7 @@ public:
     void insert(int val, int pos) {
         Node* l, * r;
         split_by_size(head, pos - 1, l, r);
-        // Node* new_node;
-        // new_node->val = val;
-        Node* new_node = new Node(val);
+        Node* new_node = new Node{val};
         Node* t1 = merge(l, new_node);
         head = merge(t1, r);
     }
@@ -150,8 +142,7 @@ int main() {
     treap.insert(24, 2);
     treap.insert(13, 3);
     treap.insert(42, 3);
-    treap.insert(92, 3);
-    treap.insert(12, 3);
+
 
     std::cout << "BST: ";
     treap.print_bst(treap.head);
