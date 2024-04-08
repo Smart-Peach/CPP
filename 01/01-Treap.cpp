@@ -1,14 +1,19 @@
 ﻿#include "Treap.hpp"
 
-int Treap::get_size(Node* t) {
-    return t ? t->size : 0;
+void Node::update() {
+    this->size = 1 + get_size(this->left) + get_size(this->right);
+    this->sum = this->val + get_sum(this->left) + get_sum(this->right);
 }
 
-int Treap::get_sum(Node* t) {
-    return t ? t->sum : 0;
+int Node::get_size() {
+    return this ? this->size : 0;
 }
 
-void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
+int Node::get_sum() {
+    return this ? this->sum : 0;
+}
+
+static void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
     if (!t) {
         left = right = nullptr;
         return;
@@ -26,12 +31,7 @@ void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
     }
 }
 
-void Treap::update(Node* t) {
-    t->size = 1 + get_size(t->left) + get_size(t->right);
-    t->sum = t->val + get_sum(t->left) + get_sum(t->right);
-}
-
-Treap::Node* Treap::merge(Node* t1, Node* t2) {
+static Treap::Node* Treap::merge(Node* t1, Node* t2) {
     if (!t1) {
         return t2;
     }
@@ -62,7 +62,7 @@ void Treap::insert(int val, int pos) {
     split_by_size(head, pos - 1, l, r);
     Node* new_node = new Node{val};
     Node* t1 = merge(l, new_node);
-    head = merge(t1, r);
+    this->head = merge(t1, r);
 }
 
 void Treap::erase(Node* t, int pos) {
@@ -71,21 +71,21 @@ void Treap::erase(Node* t, int pos) {
     Node* e, * rr;
     split_by_size(r, 1, e, rr);
     delete e;
-    head = merge(l, rr);
+    this->head = merge(l, rr);
 }
 
 int Treap::summa(int _from, int _to) {
-    if (_from < 1 || _from > head->size || _to > head->size) {
+    if (_from < 1 || _from > this->head->size || _to > this->head->size) {
         throw std::out_of_range("Index out of range!");
     }
     Node* l, * r;
-    split_by_size(head, _from - 1, l, r);
+    split_by_size(this->head, _from - 1, l, r);
     Node* rl, * rr;
     split_by_size(r, _to - _from + 1, rl, rr);
     return rl->sum;
 }
 
-void Treap::print_bst(Node* root) {
+static void Treap::print_bst(Node* root) {
     if (!root) {
         std::cout << "x ";
         return;
@@ -95,7 +95,7 @@ void Treap::print_bst(Node* root) {
     print_bst(root->right);
 }
 
-void Treap::print_numbers(Node* root) {
+static void Treap::print_numbers(Node* root) {
     if (root->left) {
         print_numbers(root->left);
     }

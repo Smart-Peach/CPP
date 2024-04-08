@@ -17,15 +17,17 @@ private:
             delete left;
             delete right;
         }
+
+        int get_size();
+        int get_sum();
+        void update();
     };
 
     Node* head;
 
-    int get_size(Node* t);
-    int get_sum(Node* t);
-    void split_by_size(Node* t, int size, Node*& left, Node*& right);
-    void update(Node* t);
-    Node* merge(Node* t1, Node* t2);
+
+    static void split_by_size(Node* t, int size, Node*& left, Node*& right);
+    static Node* merge(Node* t1, Node* t2);
 
 public:
     Treap();
@@ -33,6 +35,6 @@ public:
     void insert(int val, int pos);
     void erase(Node* t, int pos);
     int summa(int _from, int _to);
-    void print_bst(Node* root);
-    void print_numbers(Node* root);
+    static void print_bst(Node* root);
+    static void print_numbers(Node* root);
 };
