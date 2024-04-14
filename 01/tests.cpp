@@ -1,20 +1,8 @@
 #include "01-Treap.hpp"
-#include "gtest/gtest.h"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
-TEST(PresentationTest, TestSumma) {
-    Treap A;
-    A.insert(5, 1);
-    A.insert(17, 2);
-    A.insert(99, 2);
-    A.insert(2, 3);
-    A.insert(24, 2);
-    A.insert(13, 3);
-    A.insert(42, 3);
-
-    ASSERT_EQ(A.summa(1, 7), 5 + 24 + 42 + 13 + 99 + 2 + 17);
-}
-
-TEST(ExceptionTest, TestException) {
+TEST(TreapTest, TestException) {
     Treap A;
     A.insert(5, 1);
     A.insert(17, 2);
@@ -27,7 +15,20 @@ TEST(ExceptionTest, TestException) {
     EXPECT_THROW(A.summa(23, 45), std::out_of_range);
 }
 
-TEST(FirstTest, TestSumma) {
+TEST(TreapTest, TestSumma1) {
+    Treap A;
+    A.insert(5, 1);
+    A.insert(17, 2);
+    A.insert(99, 2);
+    A.insert(2, 3);
+    A.insert(24, 2);
+    A.insert(13, 3);
+    A.insert(42, 3);
+
+    ASSERT_EQ(A.summa(1, 7), 5 + 24 + 42 + 13 + 99 + 2 + 17);
+}
+
+TEST(TreapTest, TestSumma2) {
     Treap A;
     for (int i = 1; i <= 7; ++i) {
         A.insert(i, i);
@@ -36,7 +37,7 @@ TEST(FirstTest, TestSumma) {
     ASSERT_EQ(A.summa(4, 6), 4 + 5 + 6);
 }
 
-TEST(SecondTest, TestSumma) {
+TEST(TreapTest, TestSumma3) {
     Treap A;
     for (int i = 7; i >= 0; --i) {
         A.insert(i, 1);
@@ -45,7 +46,7 @@ TEST(SecondTest, TestSumma) {
     ASSERT_EQ(A.summa(4, 6), 3 + 4 + 5);
 }
 
-TEST(ThirdTest, TestSumma) {
+TEST(TreapTest, TestSumma4) {
     Treap A;
     A.insert(18, 1);
     A.insert(12, 1);
@@ -59,7 +60,7 @@ TEST(ThirdTest, TestSumma) {
     ASSERT_EQ(A.summa(2, 6), 12 + 14 + 15 + 18 + 23);
 }
 
-TEST(FourthTest, TestSumma) {
+TEST(TreapTest, TestSumma5) {
     Treap A;
     A.insert(654, 1);
     A.insert(54, 2);

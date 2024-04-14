@@ -1,37 +1,39 @@
-﻿#include "Treap.hpp"
+﻿#include "01-Treap.hpp"
 
-void Node::update() {
+Treap::Node::Node(int val): val(val) {}
+
+int Treap::Node::get_size(Node* node) {
+    return node ? node->size : 0;
+}
+
+int Treap::Node::get_sum(Node* node) {
+    return node ? node->sum : 0;
+}
+
+void Treap::Node::update() {
     this->size = 1 + get_size(this->left) + get_size(this->right);
     this->sum = this->val + get_sum(this->left) + get_sum(this->right);
 }
 
-int Node::get_size() {
-    return this ? this->size : 0;
-}
-
-int Node::get_sum() {
-    return this ? this->sum : 0;
-}
-
-static void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
+void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
     if (!t) {
         left = right = nullptr;
         return;
     }
 
-    if (size <= get_size(t->left)) {
+    if (size <= Node::get_size(t->left)) {
         split_by_size(t->left, size, left, t->left);
-        update(t);
+        t->update();
         right = t;
     }
     else {
-        split_by_size(t->right, size - get_size(t->left) - 1, t->right, right);
-        update(t);
+        split_by_size(t->right, size - Node::get_size(t->left) - 1, t->right, right);
+        t->update();
         left = t;
     }
 }
 
-static Treap::Node* Treap::merge(Node* t1, Node* t2) {
+Treap::Node* Treap::merge(Node* t1, Node* t2) {
     if (!t1) {
         return t2;
     }
@@ -41,12 +43,12 @@ static Treap::Node* Treap::merge(Node* t1, Node* t2) {
 
     if (t1->priority < t2->priority) {
         t1->right = merge(t1->right, t2);
-        update(t1);
+        t1->update();
         return t1;
     }
     else {
         t2->left = merge(t1, t2->left);
-        update(t2);
+        t2->update();
         return t2;
     }
 }
@@ -54,18 +56,26 @@ static Treap::Node* Treap::merge(Node* t1, Node* t2) {
 Treap::Treap() : head(nullptr) {}
 
 Treap::~Treap() {
-    delete head;
+    clearTreap(head);
+}
+
+void Treap::clearTreap(Node* node) {
+    if (node){
+        clearTreap(node->left);
+        clearTreap(node->right);
+        delete node;
+    }
 }
 
 void Treap::insert(int val, int pos) {
     Node* l, * r;
     split_by_size(head, pos - 1, l, r);
-    Node* new_node = new Node{val};
+    Node* new_node = new Node(val);  // MEMORY PROBLEM ???
     Node* t1 = merge(l, new_node);
     this->head = merge(t1, r);
 }
 
-void Treap::erase(Node* t, int pos) {
+void Treap::erase(Treap::Node* t, int pos) {
     Node* l, * r;
     split_by_size(t, pos - 1, l, r);
     Node* e, * rr;
@@ -85,7 +95,7 @@ int Treap::summa(int _from, int _to) {
     return rl->sum;
 }
 
-static void Treap::print_bst(Node* root) {
+void Treap::print_bst(Treap::Node* root) {
     if (!root) {
         std::cout << "x ";
         return;
@@ -95,7 +105,7 @@ static void Treap::print_bst(Node* root) {
     print_bst(root->right);
 }
 
-static void Treap::print_numbers(Node* root) {
+void Treap::print_numbers(Treap::Node* root) {
     if (root->left) {
         print_numbers(root->left);
     }

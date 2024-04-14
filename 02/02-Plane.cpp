@@ -23,7 +23,7 @@ public:
     Line(double aa, double bb, double cc) : a(aa), b(bb), c(cc) {}
 
     // Returns Point - the intersection of two lines
-    std::optional<Point*> findIntersection(const Line& l2) {
+    std::optional<Point> findIntersection(const Line& l2) {
         double det = this->a * l2.b - l2.a * this->b;
 
         if (det == 0) {  // Parallel lines
@@ -33,7 +33,8 @@ public:
         double x = (this->b * l2.c - l2.b * this->c) / det;
         double y = (this->c * l2.a - l2.c * this->a) / det;
 
-        return new Point{x, y};
+        struct Point res_point = {.x=x, .y=y};
+        return res_point;
     }
 
     // Returns Line - the perpendicular to the given line in exact point

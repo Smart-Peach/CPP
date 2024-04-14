@@ -13,13 +13,9 @@ private:
         Node* left = nullptr;
         Node* right = nullptr;
 
-        ~Node() {
-            delete left;
-            delete right;
-        }
-
-        int get_size();
-        int get_sum();
+        Node(int val);
+        static int get_size(Node* node);
+        static int get_sum(Node* node);
         void update();
     };
 
@@ -28,6 +24,9 @@ private:
 
     static void split_by_size(Node* t, int size, Node*& left, Node*& right);
     static Node* merge(Node* t1, Node* t2);
+    // Node* deep_copy(Node* other);
+    // void clear(Node* node);
+    static void clearTreap(Node* node);
 
 public:
     Treap();
