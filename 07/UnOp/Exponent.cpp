@@ -1,17 +1,16 @@
 #include "UnaryOperation.hpp"
-#include "../Mult.cpp"
+#include "../BinOp/Mult.cpp"
 
-class Exponent: public UnaryOpperation {
+class Exponent: public UnaryOperation {
 
 public:
     Exponent(Expression* op) : UnaryOperation(op) {}
-    Exponent(const Exponent& other): operand(other.operand) {}
 
     Expression* diff(std::string var) override {
-        return new Mult(new Exponent(this*), operand->diff());
+        return new Mult(this, operand->diff(var));
     }
 
     std::string to_string() const override {
         return "e^(" + operand->to_string() + ")";
     }
-}
+};

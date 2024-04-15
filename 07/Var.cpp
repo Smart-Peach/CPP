@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Expression.hpp"
 #include "Val.cpp"
 
@@ -16,6 +18,6 @@ public:
     }
 
     std::string to_string() const override {
-        return std::to_string(value);
+        return name;
     }
-}
+};

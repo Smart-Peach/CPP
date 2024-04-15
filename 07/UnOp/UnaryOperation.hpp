@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Expression.hpp"
 
 class UnaryOperation: public Expression {
@@ -10,4 +12,4 @@ public:
     ~UnaryOperation() {
         delete operand;
     }
-}
+};

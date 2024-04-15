@@ -1,6 +1,8 @@
+#pragma once
+
 #include "../Expression.hpp"
 
-class BinaryOpperation: public Expression {
+class BinaryOperation: public Expression {
 
 protected:
     Expression* left;
@@ -8,10 +10,10 @@ protected:
     std::string operation;
 
 public:
-    BinaryOpperation(Expression* l, Expression* r, std::string op) : left(l), right(r), operation(op) {}
+    BinaryOperation(Expression* l, Expression* r, std::string op) : left(l), right(r), operation(op) {}
     BinaryOperation(const BinaryOperation& other): left(other.left), right(other.right), operation(other.operation) {}
 
-    ~BinaryOpperation() {
+    ~BinaryOperation() {
         delete left;
         delete right;
     }
@@ -21,4 +23,4 @@ public:
     }
 
 
-}
+};
