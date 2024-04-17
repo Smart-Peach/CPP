@@ -23,7 +23,9 @@ public:
     Treap();
     ~Treap();
     Treap(const Treap& other);
+    Treap(Treap&& other);
     Treap& operator=(const Treap& other);
+    Treap& operator=(Treap&& other);
 
     void insert(int val, int pos);
     void erase(Node* t, int pos);
@@ -37,7 +39,6 @@ private:
 
     static void split_by_size(Node* t, int size, Node*& left, Node*& right);
     static Node* merge(Node* t1, Node* t2);
-    Node* deep_copy(Node* other);
     void copyTreap(Node* node, int count);
     static void clearTreap(Node* node);
 };

@@ -116,6 +116,34 @@ TEST(TreapTest, CopyConstructorMultipleNodes) {
     check_eq(treap1.get_head(), treap2.get_head());
 }
 
+TEST(TreapTest, MoveConstructor) {
+    int arr[] = {45, 54, 23, 987, 34, 98, 4};
+    int len = sizeof(arr) / sizeof(int);
+	Treap t1 = Treap();
+	for(int i=0; i < len; i++) {
+        t1.insert(arr[i], i+1);
+    }
+    int summ1 = t1.summa(1, 7); 
+	Treap t2 = Treap(std::move(t1));
+	ASSERT_TRUE(summ1 == t2.summa(1, 7));
+    ASSERT_TRUE(t1.get_head() == nullptr);
+}
+
+TEST(TreapTest, MoveAssignmentOperator) {
+    int arr[] = {45, 54, 23, 987, 34, 98, 4};
+    int len = sizeof(arr) / sizeof(int);
+	Treap t1 = Treap();
+	for(int i=0; i < len; i++) {
+        t1.insert(arr[i], i+1);
+    }
+    int summ1 = t1.summa(1, 7); 
+	Treap t2 = Treap();
+    std::cout << "Before moving" << std::endl;
+    t2 = std::move(t1);
+	ASSERT_TRUE(summ1 == t2.summa(1, 7));
+    ASSERT_TRUE(t1.get_head() == nullptr);
+}
+
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

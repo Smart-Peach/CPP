@@ -64,7 +64,7 @@ void Treap::clearTreap(Node* node) {
         clearTreap(node->left);
         clearTreap(node->right);
         delete node;
-        node = nullptr; // !!!!!!!!!!!!!!!!!!!!!!!
+        node = nullptr;
     }
 }
 
@@ -72,20 +72,13 @@ void Treap::clearTreap(Node* node) {
 Treap& Treap::operator=(const Treap& other) {
     if (this != &other) {
         clearTreap(this->head);
-        // head = deep_copy(other.head);
         copyTreap(other.head, 1);
     }
     return *this;
 }
 
-// Copy ctor
-// Treap::Treap(const Treap& other){
-//     head = deep_copy(other.head);
-// }
-
 Treap::Treap(const Treap& other) : head(nullptr){
     copyTreap(other.head, 1);
-    // head = deep_copy(other.head);
 }
 
 void Treap::copyTreap(Node* node, int count) {
@@ -97,26 +90,27 @@ void Treap::copyTreap(Node* node, int count) {
     }
 }
 
-Treap::Node* Treap::deep_copy(Treap::Node* other, Treap::Node* native) {
-    if (!other) {
-        return nullptr;
+// Move constructor
+Treap::Treap(Treap&& other) {
+    head = other.head;
+    other.head = nullptr;
+}
+
+// Move assignment operator
+Treap& Treap::operator=(Treap&& other) {
+    if (this != &other) {
+        delete head;
+        this->head = other.head;
+        other.head = nullptr;
+        // std::swap(this->head, other.head);
     }
-
-    Node* new_node;
-    new_node->val = other->val;
-    new_node->priority = other->priority;
-    new_node->size = other->size;
-    new_node->sum = other->sum;
-
-    new_node->left = deep_copy(other->left);
-    new_node->right = deep_copy(other->right);
-    return new_node;
-} 
+    return *this;
+}
 
 void Treap::insert(int val, int pos) {
     Node* l, * r;
     split_by_size(head, pos - 1, l, r);
-    Node* new_node = new Node(val);  // MEMORY PROBLEM ???
+    Node* new_node = new Node(val);
     Node* t1 = merge(l, new_node);
     this->head = merge(t1, r);
 }
