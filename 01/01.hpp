@@ -31,7 +31,7 @@ public:
     void erase(Node* t, int pos);
     int summa(int _from, int _to);
     static void print_bst(Node* root);
-    static void print_numbers(Node* root);
+    static std::string print_numbers(Node* root, std::string line);
     Node* get_head();
 
 private:

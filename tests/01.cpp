@@ -77,23 +77,13 @@ TEST(TreapTest, TestSumma5) {
     ASSERT_EQ(A.summa(3, 8), 654 + 8 + 9 + 5 + 54 + 61);
 }
 
-void check_eq(Treap::Node* node1, Treap::Node* node2) {
-    // if (node1 || node2) {
-    //     ASSERT_EQ(node1->val, node2->val);
-    //     ASSERT_EQ(Treap::Node::get_sum(node1), Treap::Node::get_sum(node2));
-    //     ASSERT_EQ(Treap::Node::get_size(node1), Treap::Node::get_size(node2));
-    //     check_eq(node1->right, node2->right);
-    //     check_eq(node1->left, node2->left);
-    // }
-}
-
 TEST(TreapTest, CopyConstructorSingleNode) {
     Treap treap1 = Treap();
     treap1.insert(5, 0);
 
     Treap treap2(treap1);
 
-    check_eq(treap1.get_head(), treap2.get_head());
+    ASSERT_EQ(Treap::print_numbers(treap1.get_head(), ""), Treap::print_numbers(treap2.get_head(), ""));
 }
 
 TEST(TreapTest, AssignmentOperatorEmpty) {
@@ -102,7 +92,7 @@ TEST(TreapTest, AssignmentOperatorEmpty) {
 
     Treap treap2 = treap1;
 
-    check_eq(treap1.get_head(), treap2.get_head());
+    ASSERT_EQ(Treap::print_numbers(treap1.get_head(), ""), Treap::print_numbers(treap2.get_head(), ""));
 }
 
 TEST(TreapTest, CopyConstructorMultipleNodes) {
@@ -113,7 +103,7 @@ TEST(TreapTest, CopyConstructorMultipleNodes) {
 
     Treap treap2(treap1);
 
-    check_eq(treap1.get_head(), treap2.get_head());
+    ASSERT_EQ(Treap::print_numbers(treap1.get_head(), ""), Treap::print_numbers(treap2.get_head(), ""));
 }
 
 TEST(TreapTest, MoveConstructor) {
@@ -138,7 +128,6 @@ TEST(TreapTest, MoveAssignmentOperator) {
     }
     int summ1 = t1.summa(1, 7); 
 	Treap t2 = Treap();
-    std::cout << "Before moving" << std::endl;
     t2 = std::move(t1);
 	ASSERT_TRUE(summ1 == t2.summa(1, 7));
     ASSERT_TRUE(t1.get_head() == nullptr);

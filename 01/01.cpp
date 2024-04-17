@@ -71,22 +71,26 @@ void Treap::clearTreap(Node* node) {
 // Assignment operator
 Treap& Treap::operator=(const Treap& other) {
     if (this != &other) {
+        int pos = Node::get_size(head);
         clearTreap(this->head);
-        copyTreap(other.head, 1);
+        // copyTreap(other.head, 1);
+        copyTreap(other.head, pos);
     }
     return *this;
 }
 
-Treap::Treap(const Treap& other) : head(nullptr){
-    copyTreap(other.head, 1);
+Treap::Treap(const Treap& other) {
+    int pos = Node::get_size(head);
+    head = nullptr;
+    copyTreap(other.head, pos);
 }
 
-void Treap::copyTreap(Node* node, int count) {
+void Treap::copyTreap(Node* node, int pos) {
     if (node != nullptr) {
-        insert(count, node->val);
-        count++;
-        copyTreap(node->left, count);
-        copyTreap(node->right, count);
+        copyTreap(node->left, pos);
+        insert(node->val, pos);
+        // count++;
+        copyTreap(node->right, pos);
     }
 }
 
@@ -102,7 +106,6 @@ Treap& Treap::operator=(Treap&& other) {
         delete head;
         this->head = other.head;
         other.head = nullptr;
-        // std::swap(this->head, other.head);
     }
     return *this;
 }
@@ -145,14 +148,15 @@ void Treap::print_bst(Treap::Node* root) {
     print_bst(root->right);
 }
 
-void Treap::print_numbers(Treap::Node* root) {
+std::string Treap::print_numbers(Treap::Node* root, std::string line) {
     if (root->left) {
-        print_numbers(root->left);
+        print_numbers(root->left, line);
     }
-    std::cout << root->val << ' ';
+    line = line + std::to_string(root->val) + " ";
     if (root->right) {
-        print_numbers(root->right);
+        print_numbers(root->right, line);
     }
+    return line;
 }
 
 Treap::Node* Treap::get_head() { return head; }
