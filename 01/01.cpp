@@ -15,6 +15,62 @@ void Treap::Node::update() {
     this->sum = this->val + get_sum(this->left) + get_sum(this->right);
 }
 
+Treap::Treap() : head(nullptr) {}
+
+//Copy ctor
+Treap::Treap(const Treap& other) {
+    int pos = Node::get_size(head);
+    head = nullptr;
+    copyTreap(other.head, pos);
+}
+
+// Assignment operator
+Treap& Treap::operator=(const Treap& other) {
+    if (this != &other) {
+        int pos = Node::get_size(head);
+        clearTreap(this->head);
+        copyTreap(other.head, pos);
+    }
+    return *this;
+}
+
+// Move constructor
+Treap::Treap(Treap&& other) {
+    head = other.head;
+    other.head = nullptr;
+}
+
+// Move assignment operator
+Treap& Treap::operator=(Treap&& other) {
+    if (this != &other) {
+        delete head;
+        this->head = other.head;
+        other.head = nullptr;
+    }
+    return *this;
+}
+
+Treap::~Treap() {
+    clearTreap(head);
+}
+
+void Treap::clearTreap(Node* node) {
+    if (node){
+        clearTreap(node->left);
+        clearTreap(node->right);
+        delete node;
+        node = nullptr;
+    }
+}
+
+void Treap::copyTreap(Node* node, int pos) {
+    if (node != nullptr) {
+        copyTreap(node->left, pos);
+        insert(node->val, pos);
+        copyTreap(node->right, pos);
+    }
+}
+
 void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
     if (!t) {
         left = right = nullptr;
@@ -51,63 +107,6 @@ Treap::Node* Treap::merge(Node* t1, Node* t2) {
         t2->update();
         return t2;
     }
-}
-
-Treap::Treap() : head(nullptr) {}
-
-Treap::~Treap() {
-    clearTreap(head);
-}
-
-void Treap::clearTreap(Node* node) {
-    if (node){
-        clearTreap(node->left);
-        clearTreap(node->right);
-        delete node;
-        node = nullptr;
-    }
-}
-
-// Assignment operator
-Treap& Treap::operator=(const Treap& other) {
-    if (this != &other) {
-        int pos = Node::get_size(head);
-        clearTreap(this->head);
-        // copyTreap(other.head, 1);
-        copyTreap(other.head, pos);
-    }
-    return *this;
-}
-
-Treap::Treap(const Treap& other) {
-    int pos = Node::get_size(head);
-    head = nullptr;
-    copyTreap(other.head, pos);
-}
-
-void Treap::copyTreap(Node* node, int pos) {
-    if (node != nullptr) {
-        copyTreap(node->left, pos);
-        insert(node->val, pos);
-        // count++;
-        copyTreap(node->right, pos);
-    }
-}
-
-// Move constructor
-Treap::Treap(Treap&& other) {
-    head = other.head;
-    other.head = nullptr;
-}
-
-// Move assignment operator
-Treap& Treap::operator=(Treap&& other) {
-    if (this != &other) {
-        delete head;
-        this->head = other.head;
-        other.head = nullptr;
-    }
-    return *this;
 }
 
 void Treap::insert(int val, int pos) {
