@@ -71,8 +71,9 @@ void Treap::clearTreap(Node* node) {
 // Assignment operator
 Treap& Treap::operator=(const Treap& other) {
     if (this != &other) {
-         clearTreap(this->head);
-         head = deep_copy(other.head);
+        clearTreap(this->head);
+        head = deep_copy(other.head);
+        // copyTreap(other.head, 1);
     }
     return *this;
 }
