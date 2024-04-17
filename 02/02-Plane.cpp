@@ -12,19 +12,19 @@ private:
     double a, b, c;
 
 public:
-    // Constractor for 2 points
+    // Constructor for 2 points
     Line(Point p1, Point p2) {
         a = p2.y - p1.y;
         b = p1.x - p2.x;
         c = p1.x * (p1.y - p2.y) + p1.y * (p2.x - p1.x);
     }
 
-    // Constractor for coefficients a, b, c
+    // Constructor for coefficients a, b, c
     Line(double aa, double bb, double cc) : a(aa), b(bb), c(cc) {}
 
-    // Returns Point - the intersection of two lines
+    // Returns Point - the intersection of two lines (Cramer's formula)
     std::optional<Point> findIntersection(const Line& l2) {
-        double det = this->a * l2.b - l2.a * this->b;
+        double det = get_det(l2);
 
         if (det == 0) {  // Parallel lines
             return std::nullopt;
@@ -45,8 +45,11 @@ public:
 
         return Line(new_a, new_b, new_c);
     }
-};
 
-int main() {}
+    double get_det(const Line& l2) {
+        return this->a * l2.b - l2.a * this->b;
+    }
+};  
+
 
 
