@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 
 TEST(TreapTest, TestException) {
-    Treap A;
+    Treap A = Treap();
     A.insert(5, 1);
     A.insert(17, 2);
     A.insert(99, 2);
@@ -16,7 +16,7 @@ TEST(TreapTest, TestException) {
 }
 
 TEST(TreapTest, TestSumma1) {
-    Treap A;
+    Treap A = Treap();
     A.insert(5, 1);
     A.insert(17, 2);
     A.insert(99, 2);
@@ -29,7 +29,7 @@ TEST(TreapTest, TestSumma1) {
 }
 
 TEST(TreapTest, TestSumma2) {
-    Treap A;
+    Treap A = Treap();
     for (int i = 1; i <= 7; ++i) {
         A.insert(i, i);
     }
@@ -38,7 +38,7 @@ TEST(TreapTest, TestSumma2) {
 }
 
 TEST(TreapTest, TestSumma3) {
-    Treap A;
+    Treap A = Treap();
     for (int i = 7; i >= 0; --i) {
         A.insert(i, 1);
     }
@@ -47,7 +47,7 @@ TEST(TreapTest, TestSumma3) {
 }
 
 TEST(TreapTest, TestSumma4) {
-    Treap A;
+    Treap A = Treap();
     A.insert(18, 1);
     A.insert(12, 1);
     A.insert(14, 2);
@@ -61,7 +61,7 @@ TEST(TreapTest, TestSumma4) {
 }
 
 TEST(TreapTest, TestSumma5) {
-    Treap A;
+    Treap A = Treap();
     A.insert(654, 1);
     A.insert(54, 2);
     A.insert(10, 1);
@@ -76,6 +76,82 @@ TEST(TreapTest, TestSumma5) {
 
     ASSERT_EQ(A.summa(3, 8), 654 + 8 + 9 + 5 + 54 + 61);
 }
+
+void check_eq(Treap::Node* node1, Treap::Node* node2) {
+    if (node1 || node2) {
+        ASSERT_EQ(node1->val, node2->val);
+        ASSERT_EQ(Treap::Node::get_sum(node1), Treap::Node::get_sum(node2));
+        ASSERT_EQ(Treap::Node::get_size(node1), Treap::Node::get_size(node2));
+        check_eq(node1->right, node2->right);
+        check_eq(node1->left, node2->left);
+    }
+}
+
+TEST(TreapTest, CopyConstructorSingleNode) {
+    Treap treap1 = Treap();
+    treap1.insert(5, 0);
+
+    Treap treap2(treap1);
+
+    check_eq(treap1.get_head(), treap2.get_head());
+}
+
+TEST(TreapTest, AssignmentOperatorEmpty) {
+    Treap treap1 = Treap();
+    treap1.insert(5, 0);
+
+    Treap treap2;
+
+    treap2 = treap1;
+
+    check_eq(treap1.get_head(), treap2.get_head());
+}
+
+TEST(TreapTest, CopyConstructorMultipleNodes) {
+    Treap treap1 = Treap();
+    treap1.insert(5, 0);
+    treap1.insert(10, 1);
+    treap1.insert(15, 2);
+
+    Treap treap2(treap1);
+
+    check_eq(treap1.get_head(), treap2.get_head());
+}
+
+TEST(TreapTest, AssignmentOperatorDifferentSizes) {
+    Treap treap1 = Treap();
+    treap1.insert(5, 0);
+    treap1.insert(10, 1);
+
+    Treap treap2;
+    treap2.insert(3, 0);
+    treap2.insert(7, 1);
+    treap2.insert(12, 2);
+
+    treap2 = treap1;
+
+    check_eq(treap1.get_head(), treap2.get_head());
+}
+
+// TEST(TreapTest, AssignmentOperatorPointersCheck) {
+//     Treap treap1 = Treap();
+//     treap1.insert(5, 0);
+//     treap1.insert(10, 1);
+
+//     Treap treap2 = Treap();
+//     treap2.insert(3, 0);
+//     treap2.insert(7, 1);
+//     treap2.insert(12, 2);
+
+//     Treap check_treap = Treap();
+//     treap1.insert(5, 0);
+//     treap1.insert(10, 1);
+
+//     treap2 = treap1;
+//     delete treap1;
+
+//     check_eq(treap2.get_head(), check_treap.get_head());
+// }
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

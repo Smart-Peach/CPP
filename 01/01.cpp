@@ -64,20 +64,48 @@ void Treap::clearTreap(Node* node) {
         clearTreap(node->left);
         clearTreap(node->right);
         delete node;
+        node = nullptr; // !!!!!!!!!!!!!!!!!!!!!!!
     }
 }
 
-Treap::Treap(const Treap& other) : head(nullptr) {deep_copy(other.head)}
+// Assignment operator
+Treap& Treap::operator=(const Treap& other) {
+    if (this != &other) {
+         clearTreap(this->head);
+         head = deep_copy(other.head);
+    }
+    return *this;
+}
+
+// Copy ctor
+// Treap::Treap(const Treap& other){
+//     head = deep_copy(other.head);
+// }
+
+Treap::Treap(const Treap& other) : head(nullptr) {
+    copyTreap(other.head, 1);
+}
+
+void Treap::copyTreap(Node* node, int count) {
+    if (node != nullptr) {
+        insert(count, node->val);
+        count++;
+        copyTreap(node->left, count);
+        copyTreap(node->right, count);
+    }
+}
 
 Treap::Node* Treap::deep_copy(Treap::Node* other) {
     if (!other) {
         return nullptr;
     }
+
     Node* new_node;
     new_node->val = other->val;
     new_node->priority = other->priority;
     new_node->size = other->size;
     new_node->sum = other->sum;
+
     new_node->left = deep_copy(other->left);
     new_node->right = deep_copy(other->right);
     return new_node;
@@ -130,3 +158,5 @@ void Treap::print_numbers(Treap::Node* root) {
         print_numbers(root->right);
     }
 }
+
+Treap::Node* Treap::get_head() { return head; }
