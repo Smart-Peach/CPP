@@ -116,26 +116,6 @@ TEST(TreapTest, CopyConstructorMultipleNodes) {
     check_eq(treap1.get_head(), treap2.get_head());
 }
 
-// TEST(TreapTest, AssignmentOperatorPointersCheck) {
-//     Treap treap1 = Treap();
-//     treap1.insert(5, 0);
-//     treap1.insert(10, 1);
-
-//     Treap treap2 = Treap();
-//     treap2.insert(3, 0);
-//     treap2.insert(7, 1);
-//     treap2.insert(12, 2);
-
-//     Treap check_treap = Treap();
-//     treap1.insert(5, 0);
-//     treap1.insert(10, 1);
-
-//     treap2 = treap1;
-//     ~treap1;
-
-//     check_eq(treap2.get_head(), check_treap.get_head());
-// }
-
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

@@ -72,8 +72,8 @@ void Treap::clearTreap(Node* node) {
 Treap& Treap::operator=(const Treap& other) {
     if (this != &other) {
         clearTreap(this->head);
-        head = deep_copy(other.head);
-        // copyTreap(other.head, 1);
+        // head = deep_copy(other.head);
+        copyTreap(other.head, 1);
     }
     return *this;
 }
@@ -83,8 +83,9 @@ Treap& Treap::operator=(const Treap& other) {
 //     head = deep_copy(other.head);
 // }
 
-Treap::Treap(const Treap& other) : head(nullptr) {
+Treap::Treap(const Treap& other) : head(nullptr){
     copyTreap(other.head, 1);
+    // head = deep_copy(other.head);
 }
 
 void Treap::copyTreap(Node* node, int count) {
@@ -96,7 +97,7 @@ void Treap::copyTreap(Node* node, int count) {
     }
 }
 
-Treap::Node* Treap::deep_copy(Treap::Node* other) {
+Treap::Node* Treap::deep_copy(Treap::Node* other, Treap::Node* native) {
     if (!other) {
         return nullptr;
     }
