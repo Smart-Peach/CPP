@@ -1,49 +1,80 @@
-// #include <iostream>
-// #include <stdio.h>
+#include "FileRW.hpp"
 
 
-// class FileReaderWriter: public ReaderWriter {
-//     FILE* source;
+bool FileReaderWriter::is_source_open() {
+    return source != nullptr;
+}
 
-//     FileReaderWriter(std::string src_name) {
-//         source = fopen_s(src_name, "w+");
-//     };
+bool FileReaderWriter::is_eof() {
+    return !feof(source);
+}
 
-//     bool is_source_open() { // ????
-//         return source != nullptr;
-//     }
+void FileReaderWriter::close() {
+    fclose(source);
+}
 
-//     bool is_eof(int pos) {
-//         return !feof(source);
-//     }
+std::string FileReaderWriter::get_source() { return "lalala"; }
 
-//     void close() {
-//         fclose(source);
-//     }
+void FileReaderWriter::write_char(char ch) {
+    fprintf(source, "%c", ch);
+}
 
-//     void print_source() { std::cout << source << std::endl; }
+void FileReaderWriter::write_int(int i) {
+    fprintf(source, "%d", i);
+}
 
-//     void write_char(char ch) {
-        
-//     }
+void FileReaderWriter::write_double(double d) {
+    fprintf(source, "%f", d);
+}
 
-//     void write_int(int i) {
+void FileReaderWriter::write_float(float f) {
+    fprintf(source, "%f", f);
+}
 
-//     }
+void FileReaderWriter::write_bool(bool b) {
+    if (b) {
+        fprintf(source, "%d", 1);
+    } else fprintf(source, "%d", 0);
+}
 
-//     void write_double(double d) {
+void FileReaderWriter::write_string(std::string string) {
+    // fprintf(source, "%s", string);
+}
 
-//     }
+char FileReaderWriter::read_char() {
+    char ch;
+    fscanf(source, "%c", &ch);
+    return ch; 
+}
 
-//     void write_float(float f) {
+int FileReaderWriter::read_int() {
+    int i;
+    fscanf(source, "%d", &i);
+    return i;
+}
 
-//     }
+double FileReaderWriter::read_double() {
+    double d;
+    fscanf(source, "%f", &d);
+    return d;
+}
 
-//     void write_bool(bool b) {
+float FileReaderWriter::read_float() {
+    float f;
+    fscanf(source, "%f", &f);
+    return f;
+}
 
-//     }
+bool FileReaderWriter::read_bool() {
+    int b = read_int();
+    if (!b) {
+        return false;
+    }
+    return true;
+}
 
-//     void write_string(std::string string) {
-
-//     }
-// }
+std::string FileReaderWriter::read_string() {
+    std::string s;
+    fscanf(source, "%s", &s);
+    return s;
+}

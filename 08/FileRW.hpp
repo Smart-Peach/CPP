@@ -1,15 +1,18 @@
 #include <iostream>
+#include <cstdio>
+#include <stdio.h>
 #include "IO.hpp"
 #pragma once
 
-class StringReaderWriter: public ReaderWriter {
-private:
-    std::string source;
-    bool is_open;
+typedef end{} str_end;
+
+class FileReaderWriter: public ReaderWriter {
+    FILE* source;
     size_t curr_pos;
 
 public:
-    StringReaderWriter(std::string src) : source(src), is_open(true), curr_pos(0) { };
+
+    FileReaderWriter(char const* src_name) : source(fopen(src_name, "w+")), curr_pos(0) { };
 
     bool is_source_open() override;
     bool is_eof() override;
@@ -30,4 +33,5 @@ public:
     float read_float() override;
     bool read_bool() override;
     std::string read_string() override;
+
 };
