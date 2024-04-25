@@ -24,10 +24,6 @@ void StringReaderWriter::write_int(int i) {
     source += std::to_string(i);
 }
 
-void StringReaderWriter::write_double(double d) {
-    source += std::to_string(d);
-}
-
 void StringReaderWriter::write_float(float f) {
     source += std::to_string(f);
 }
@@ -53,17 +49,7 @@ int StringReaderWriter::read_int() {
         res += ch;
         ch = read_char();
     }
-    return _strtoi64(res);
-}
-
-double StringReaderWriter::read_double() {
-    char ch = read_char();
-    std::string res = "";
-    while ((ch != ' ') or (!is_eof())) {
-        res += ch;
-        ch = read_char();
-    }
-    return std::strtod(res);
+    return std::stoi(res);
 }
 
 float StringReaderWriter::read_float() {
@@ -73,7 +59,7 @@ float StringReaderWriter::read_float() {
         res += ch;
         ch = read_char();
     }
-    return std::strtof(res);
+    return std::stof(res);
 }
 
 bool StringReaderWriter::read_bool() {

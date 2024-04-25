@@ -19,14 +19,12 @@ public:
 
     void write_char(char ch) override;
     void write_int(int i)  override;
-    void write_double(double d) override;
     void write_float(float f) override;
     void write_bool(bool b) override;
     void write_string(std::string string) override;
 
     char read_char() override;
     int read_int() override;
-    double read_double() override;
     float read_float() override;
     bool read_bool() override;
     std::string read_string() override;

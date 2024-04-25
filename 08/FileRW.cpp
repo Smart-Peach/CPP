@@ -23,10 +23,6 @@ void FileReaderWriter::write_int(int i) {
     fprintf(source, "%d", i);
 }
 
-void FileReaderWriter::write_double(double d) {
-    fprintf(source, "%f", d);
-}
-
 void FileReaderWriter::write_float(float f) {
     fprintf(source, "%f", f);
 }
@@ -53,12 +49,6 @@ int FileReaderWriter::read_int() {
     return i;
 }
 
-double FileReaderWriter::read_double() {
-    double d;
-    fscanf(source, "%f", &d);
-    return d;
-}
-
 float FileReaderWriter::read_float() {
     float f;
     fscanf(source, "%f", &f);
@@ -74,7 +64,8 @@ bool FileReaderWriter::read_bool() {
 }
 
 std::string FileReaderWriter::read_string() {
-    std::string s;
-    fscanf(source, "%s", &s);
-    return s;
+    char* s;
+    fscanf(source, "%s", s);
+    std::string new_string(s);
+    return new_string;
 }

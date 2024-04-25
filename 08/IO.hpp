@@ -16,7 +16,6 @@ public:
 
     virtual char read_char() = 0;
     virtual int read_int() = 0;
-    virtual double read_double() = 0;
     virtual float read_float() = 0;
     virtual bool read_bool() = 0;
     virtual std::string read_string() = 0;
@@ -27,9 +26,7 @@ public:
     virtual ~Writer() {};
 
     virtual void write_char(char ch) = 0;
-
     virtual void write_int(int i) = 0;
-    virtual void write_double(double d) = 0;
     virtual void write_float(float f) = 0;
     virtual void write_bool(bool b) = 0;
     virtual void write_string(std::string string) = 0;
