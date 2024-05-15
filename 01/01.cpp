@@ -2,6 +2,11 @@
 
 Treap::Node::Node(int val): val(val) {}
 
+// Treap::Node::~Node() {
+//     delete left;
+//     delete right;
+// }
+
 int Treap::Node::get_size(Node* node) {
     return node ? node->size : 0;
 }
@@ -19,9 +24,16 @@ Treap::Treap() : head(nullptr) {}
 
 //Copy ctor
 Treap::Treap(const Treap& other) {
+    std::cout << "Copy ctor is called" << std::endl;
     int pos = Node::get_size(head);
+    // clearTreap(this->head);
     head = nullptr;
     copyTreap(other.head, pos);
+    // std::cout <<  print_numbers(other.head, "") << "\n" << print_numbers(head, "") << "\n";
+    // print_bst(other.head);
+    // std::cout << "\n";
+    // print_bst(head);
+    // std::cout << "\n";
 }
 
 // Assignment operator
@@ -52,6 +64,7 @@ Treap& Treap::operator=(Treap&& other) {
 
 Treap::~Treap() {
     clearTreap(head);
+    // delete head;
 }
 
 void Treap::clearTreap(Node* node) {
@@ -82,6 +95,7 @@ void Treap::split_by_size(Node* t, int size, Node*& left, Node*& right) {
         t->update();
         right = t;
     }
+
     else {
         split_by_size(t->right, size - Node::get_size(t->left) - 1, t->right, right);
         t->update();
@@ -134,7 +148,14 @@ int Treap::summa(int _from, int _to) {
     split_by_size(this->head, _from - 1, l, r);
     Node* rl, * rr;
     split_by_size(r, _to - _from + 1, rl, rr);
-    return rl->sum;
+
+    int res = rl->sum;
+    // rl - result
+    // l - left one
+    // rr - right one
+
+    this->head = merge(merge(rl, l), rr);
+    return res;
 }
 
 void Treap::print_bst(Treap::Node* root) {
@@ -149,11 +170,11 @@ void Treap::print_bst(Treap::Node* root) {
 
 std::string Treap::print_numbers(Treap::Node* root, std::string line) {
     if (root->left) {
-        print_numbers(root->left, line);
+        line = print_numbers(root->left, line);
     }
     line = line + std::to_string(root->val) + " ";
     if (root->right) {
-        print_numbers(root->right, line);
+        line = print_numbers(root->right, line);
     }
     return line;
 }
