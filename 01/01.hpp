@@ -15,7 +15,6 @@ public:
         Node* right = nullptr;
 
         Node(int val);
-        // ~Node();
         static int get_size(Node* node);
         static int get_sum(Node* node);
         void update();

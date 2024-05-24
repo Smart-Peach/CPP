@@ -35,4 +35,3 @@ class Everything: public Limit<Something, 5> {
         std::cout << "hello" << std::endl;
     }
 };
-

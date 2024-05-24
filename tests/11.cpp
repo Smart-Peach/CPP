@@ -4,15 +4,15 @@
 #include "../11/11.hpp"
 
 TEST(PrimesTest, first) {
-    ASSERT_TRUE( 2 == NthPrime<1>::value);
+    ASSERT_TRUE(2 == NthPrime<1>::value);
 }
 
 TEST(PrimesTest, second) {
-    ASSERT_TRUE( 3 == NthPrime<2>::value);
+    ASSERT_TRUE(3 == NthPrime<2>::value);
 }
 
 TEST(PrimesTest, third) {
-    ASSERT_TRUE( 5 == NthPrime<3>::value);
+    ASSERT_TRUE(5 == NthPrime<3>::value);
 }
 
 TEST(PrimesTest, fourth) {
@@ -20,7 +20,7 @@ TEST(PrimesTest, fourth) {
 }
 
 TEST(PrimesTest, fifth) {
-    ASSERT_TRUE( 11 == NthPrime<5>::value);
+    ASSERT_TRUE(11 == NthPrime<5>::value);
 }
 
 TEST(PrimesTest, sixth) {

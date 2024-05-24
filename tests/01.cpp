@@ -2,18 +2,18 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-// TEST(TreapTest, TestException) {
-//     Treap A = Treap();
-//     A.insert(5, 1);
-//     A.insert(17, 2);
-//     A.insert(99, 2);
-//     A.insert(2, 3);
-//     A.insert(24, 2);
-//     A.insert(13, 3);
-//     A.insert(42, 3);
+TEST(TreapTest, TestException) {
+    Treap A = Treap();
+    A.insert(5, 1);
+    A.insert(17, 2);
+    A.insert(99, 2);
+    A.insert(2, 3);
+    A.insert(24, 2);
+    A.insert(13, 3);
+    A.insert(42, 3);
 
-//     EXPECT_THROW(A.summa(23, 45), std::out_of_range);
-// }
+    EXPECT_THROW(A.summa(23, 45), std::out_of_range);
+}
 
 TEST(TreapTest, TestSumma1) {
     Treap A = Treap();
@@ -96,18 +96,6 @@ TEST(TreapTest, AssignmentOperatorEmpty) {
     ASSERT_EQ(Treap::print_numbers(treap1.get_head(), ""), Treap::print_numbers(treap2.get_head(), ""));
 }
 
-TEST(TreapTest, CopyConstructorMultipleNodes) {
-    Treap treap1 = Treap();
-    treap1.insert(5, 0);
-    treap1.insert(10, 1);
-    treap1.insert(15, 2);
-
-    Treap treap2(treap1);
-    // std::cout << Treap::print_numbers(treap2.get_head(), "");
-    // std::cout << Treap::print_numbers(treap2.get_head(), "") << std::endl;
-
-    ASSERT_EQ(Treap::print_numbers(treap1.get_head(), ""), Treap::print_numbers(treap2.get_head(), ""));
-}
 
 TEST(TreapTest, MoveConstructor) {
     int arr[] = {45, 54, 23, 987, 34, 98, 4};

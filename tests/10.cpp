@@ -27,7 +27,7 @@ TEST(LimitTest, TestWithDeletion) {
     delete smth1;
 
     Something smth2;
-    Something smth3;
+    Something smth3 = smth2;
     Something smth4;
 
     EXPECT_THROW(Something smth5, std::out_of_range);

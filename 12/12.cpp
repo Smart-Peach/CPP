@@ -1,12 +1,5 @@
 #include "09.hpp"
 
-// Treap<T>::Node::Node(int val): val(val) {}
-
-// Treap<T>::Node::~Node() {
-//     delete left;
-//     delete right;
-// }
-
 template <typename T>
 int Treap<T>::Node::get_size(Node* node) {
     return node ? node->size : 0;
@@ -14,23 +7,19 @@ int Treap<T>::Node::get_size(Node* node) {
 
 template <typename T>
 T Treap<T>::Node::get_sum(Node* node) {
-    return node ? node->sum : T();
+    return node ? node->sum : 0;
 }
 
-// template <>
-// std::string Treap<std::string>::Node::get_sum(Node* node) {
-//     return node ? node->sum : "";
-// }
-
-// template <>
-// Foo Treap<Foo>::Node::get_sum(Node* node) {
-//     return node ? node->sum : Foo();
-// }
+template <>
+std::string Treap<std::string>::Node::get_sum(Node* node) {
+    return node ? node->sum : "";
+}
 
 template <typename T>
 void Treap<T>::Node::update() {
     this->size = 1 + get_size(this->left) + get_size(this->right);
     this->sum = this->val + get_sum(this->left) + get_sum(this->right);
+    this->parent->update();
 }
 
 template <typename T>
@@ -73,15 +62,9 @@ Treap<T>& Treap<T>::operator=(Treap<T>&& other) {
     return *this;
 }
 
-// Treap& Treap<T>::operator=(Treap&& other) {
-//     std::swap(this->head, other.head);
-//     return *this;
-// }
-
 template <typename T>
 Treap<T>::~Treap() {
     clearTreap(head);
-    // delete head;
 }
 
 template <typename T>
@@ -114,11 +97,13 @@ void Treap<T>::split_by_size(Node* t, int size, Node*& left, Node*& right) {
         split_by_size(t->left, size, left, t->left);
         t->update();
         right = t;
+        t->parent = right; // !!!!!!!!!!!!!!!!!!!!!!
     }
     else {
         split_by_size(t->right, size - Node::get_size(t->left) - 1, t->right, right);
         t->update();
         left = t;
+        t->parent = left; /// !!!!!!!!!!!!!!!!
     }
 }
 
@@ -133,11 +118,13 @@ typename Treap<T>::Node* Treap<T>::merge(Node* t1, Node* t2) {
 
     if (t1->priority < t2->priority) {
         t1->right = merge(t1->right, t2);
+        t1->right->parent = t1; // !!!!!!!!!!!!!!
         t1->update();
         return t1;
     }
     else {
         t2->left = merge(t1, t2->left);
+        t2->left->parent = t2;
         t2->update();
         return t2;
     }
@@ -217,4 +204,3 @@ template class Treap<int>;
 template class Treap<double>;
 template class Treap<bool>;
 template class Treap<std::string>;
-// template class Treap<Foo>;
