@@ -11,11 +11,13 @@ TEST(TreapTest, Testing) {
     A.insert(24, 4);
     A.insert(13, 5);
     A.insert(42, 6);
-    A.insert(78, 7);
-    A.insert(44, 6);
+    
+    A.print_bst(A.get_head());
 
-    // A.print_bst(A.get_head());
-    std::cout << "\n";
+    std::cout << std::endl;
+    for (auto node : A) {
+        std::cout << node.val << std::endl;
+    }
 }
 
 int main(int argc, char** argv) {

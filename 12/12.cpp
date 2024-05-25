@@ -19,7 +19,6 @@ template <typename T>
 void Treap<T>::Node::update() {
     this->size = 1 + get_size(this->left) + get_size(this->right);
     this->sum = this->val + get_sum(this->left) + get_sum(this->right);
-    // this->parent->update();
 }
 
 template <typename T>
@@ -123,14 +122,12 @@ void Treap<T>::merge(Node*& t1, Node*& t2, Node*& parent) {
         t1->update();
         t1->right->parent = t1;
         parent = t1;
-        // parent->parent = nullptr;
     }
     else {
         merge(t1, t2->left, t2->left);
         t2->update();
         t2->left->parent = t2;
         parent = t2;
-        // parent->parent = nullptr;
     }
     parent->parent = nullptr;
 }
@@ -216,7 +213,33 @@ std::string Treap<std::string>::print_numbers(Treap<std::string>::Node* root, st
 template <typename T>
 typename Treap<T>::Node* Treap<T>::get_head() { return head; }
 
+// ITERATOR FUNCTIONS :
+
+template<typename T>
+typename Treap<T>::Node* Treap<T>::get_leftest(Treap<T>::Node* root) {
+    // if (!root->left or !root) { return root; }
+    // get_leftest(root->left);
+    if(!root->left || !root) { return root; }
+    // std::cout << root->val << std::endl;
+    return get_leftest(root->left);
+}
+
+template<typename T>
+typename Treap<T>::Iterator& Treap<T>::Iterator::operator++(){
+    if (curr_node->right) {
+        curr_node = get_leftest(curr_node->right);
+    } else {
+        Node* parent = curr_node->parent;
+        while(parent && curr_node == parent->right) {
+            curr_node = parent;
+            parent = curr_node->parent;
+        }
+        curr_node = parent;
+    }
+    return *this;
+}
+
 template class Treap<int>;
 template class Treap<double>;
 template class Treap<bool>;
-template class Treap<std::string>;
+// template class Treap<std::string>;

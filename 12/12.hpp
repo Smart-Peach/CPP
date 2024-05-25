@@ -24,20 +24,26 @@ public:
     };
 
     class Iterator {
-        Node* curr_;
+        Node* curr_node;
     public:
-        Iterator(Node* ptr): curr_(ptr) { }
-        Iterator(const Iterator& other);
-        Iterator& operator=(const Iterator& other);
+        Iterator(Node* ptr): curr_node(ptr) { }
+        Iterator(const Iterator& other) { curr_node = other.curr_node; }
+        Iterator& operator=(const Iterator& other) {
+            curr_node = other.curr_node;
+            return *this;
+        };
         ~Iterator() { }
 
-        // Iterator's operators
-        Node& operator*();
-        Node* operator->();
+        Node& operator*() { return *curr_node; }
+        Node* operator->() { return curr_node; };
         Iterator& operator++();
-        Iterator operator++(int);
+        Iterator operator++(int) {
+            Iterator tmp(*this);
+            ++(*this);
+            return tmp;
+        }
         friend bool operator==(const Iterator& first, const Iterator& second) {
-            return first.curr_ == second.curr_;
+            return first.curr_node == second.curr_node;
         };
         friend bool operator!=(const Iterator& first, const Iterator& second) {
             return !(first == second);
@@ -58,20 +64,16 @@ public:
     static std::string print_numbers(Node* root, std::string line);
     Node* get_head();
 
-    // Iterator begin() const {
-    //     return Iterator(head);
-    // }
-
-    // Iterator end() const {
-    //     return Iterator(nullptr);
-    // }
+    Iterator begin() const { return Iterator(get_leftest(head)); }
+    Iterator end() const { return Iterator(nullptr); }
 
 private:
     Node* head;
 
     static void split_by_size(Node* t, int size, Node*& left, Node*& right);
-    // Node* merge(Node*& t1, Node*& t2);
     void merge(Node*& t1, Node*& t2, Node*& parent);
     void copyTreap(Node* node, int count);
     static void clearTreap(Node* node);
+
+    static Node* get_leftest(Node* root);
 };
