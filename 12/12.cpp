@@ -1,4 +1,4 @@
-#include "09.hpp"
+#include "12.hpp"
 
 template <typename T>
 int Treap<T>::Node::get_size(Node* node) {
@@ -19,7 +19,7 @@ template <typename T>
 void Treap<T>::Node::update() {
     this->size = 1 + get_size(this->left) + get_size(this->right);
     this->sum = this->val + get_sum(this->left) + get_sum(this->right);
-    this->parent->update();
+    // this->parent->update();
 }
 
 template <typename T>
@@ -108,7 +108,8 @@ void Treap<T>::split_by_size(Node* t, int size, Node*& left, Node*& right) {
 }
 
 template <typename T>
-typename Treap<T>::Node* Treap<T>::merge(Node* t1, Node* t2) {
+typename Treap<T>::Node* Treap<T>::merge(Node*& t1, Node*& t2) {
+    std::cout << "in merge\n";
     if (!t1) {
         return t2;
     }
@@ -118,14 +119,30 @@ typename Treap<T>::Node* Treap<T>::merge(Node* t1, Node* t2) {
 
     if (t1->priority < t2->priority) {
         t1->right = merge(t1->right, t2);
-        t1->right->parent = t1; // !!!!!!!!!!!!!!
         t1->update();
+        t1->right->parent = t1; // !!!!!!!!!!!!!!
+        std::cout << "t1 val : " << t1->val << "\n";
+        if (t1->right) {
+            std::cout << "t1 right val : " << t1->right->val << "\n";
+            std::cout << "t1 right parent : " << t1->right->parent->val << "\n";
+        }
+        print_bst(head);
+        // t1->update();
+        std::cout << "\n";
         return t1;
     }
     else {
         t2->left = merge(t1, t2->left);
-        t2->left->parent = t2;
         t2->update();
+        t2->left->parent = t2;
+        std::cout << "t2 val : " << t2->val << "\n";
+        if (t2->left){
+            std::cout << "t2 left val : " << t2->left->val << "\n";
+            std::cout << "t2 left parent : " << t2->left->parent->val << "\n";
+        }
+        print_bst(head);
+        // t2->update();
+        std::cout << "\n";
         return t2;
     }
 }
@@ -167,7 +184,13 @@ void Treap<T>::print_bst(Treap<T>::Node* root) {
         std::cout << "x ";
         return;
     }
-    std::cout << root->val << " ";
+
+    T parent_val = T();
+    if (root->parent) {
+        T parent_val = root->parent->val;
+    }
+
+    std::cout << root->val << " (" << parent_val << ") ";
     print_bst(root->left);
     print_bst(root->right);
 }

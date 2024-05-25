@@ -15,7 +15,7 @@ public:
         T sum = val;
         Node* left = nullptr;
         Node* right = nullptr;
-        Node* parent = nullptr
+        Node* parent = nullptr;
 
         Node(T val) : val(val) {};
         static int get_size(Node* node);
@@ -23,29 +23,29 @@ public:
         void update();
     };
 
-    class Iterator {
-        private:
-            Node* curr_node;
-            std::vector<Node*> stack;
+    // class Iterator {
+    //     private:
+    //         Node* curr_node;
+    //         std::vector<Node*> stack;
         
-        public:
-            Iterator(Node* node) : curr_node(node) {
-                fill_stack(node);
-            }
+    //     public:
+    //         Iterator(Node* node) : curr_node(node) {
+    //             fill_stack(node);
+    //         }
 
-            bool operator!=(Iterator const &other) {
-                return this->curr_node != other.curr_node;
-            }
+    //         bool operator!=(Iterator const &other) {
+    //             return this->curr_node != other.curr_node;
+    //         }
 
-            T operator*() const {
-                return curr_node->val;
-            }
+    //         T operator*() const {
+    //             return curr_node->val;
+    //         }
 
-            Iterator& operator++() {
-                curr_node = curr_node->successor(); // point to next node
-                return *this;
-            }
-    };
+    //         Iterator& operator++() {
+    //             curr_node = curr_node->successor(); // point to next node
+    //             return *this;
+    //         }
+    // };
 
     Treap();
     ~Treap();
@@ -61,19 +61,19 @@ public:
     static std::string print_numbers(Node* root, std::string line);
     Node* get_head();
 
-    Iterator begin() const {
-        return Iterator(head);
-    }
+    // Iterator begin() const {
+    //     return Iterator(head);
+    // }
 
-    Iterator end() const {
-        return Iterator(nullptr);
-    }
+    // Iterator end() const {
+    //     return Iterator(nullptr);
+    // }
 
 private:
     Node* head;
 
     static void split_by_size(Node* t, int size, Node*& left, Node*& right);
-    static Node* merge(Node* t1, Node* t2);
+    Node* merge(Node*& t1, Node*& t2);
     void copyTreap(Node* node, int count);
     static void clearTreap(Node* node);
 };
