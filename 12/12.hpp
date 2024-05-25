@@ -9,7 +9,7 @@ template <typename T>
 class Treap {
 public:
     struct Node {
-        T val = 0;
+        T val = T();
         int priority = rand();
         int size = 1;
         T sum = val;
@@ -73,7 +73,8 @@ private:
     Node* head;
 
     static void split_by_size(Node* t, int size, Node*& left, Node*& right);
-    Node* merge(Node*& t1, Node*& t2);
+    // Node* merge(Node*& t1, Node*& t2);
+    void merge(Node*& t1, Node*& t2, Node*& parent);
     void copyTreap(Node* node, int count);
     static void clearTreap(Node* node);
 };

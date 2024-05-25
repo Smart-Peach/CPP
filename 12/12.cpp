@@ -97,53 +97,66 @@ void Treap<T>::split_by_size(Node* t, int size, Node*& left, Node*& right) {
         split_by_size(t->left, size, left, t->left);
         t->update();
         right = t;
-        t->parent = right; // !!!!!!!!!!!!!!!!!!!!!!
+        // t->parent = right; // !!!!!!!!!!!!!!!!!!!!!!
     }
     else {
         split_by_size(t->right, size - Node::get_size(t->left) - 1, t->right, right);
         t->update();
         left = t;
-        t->parent = left; /// !!!!!!!!!!!!!!!!
+        // t->parent = left; /// !!!!!!!!!!!!!!!!
     }
 }
 
 template <typename T>
-typename Treap<T>::Node* Treap<T>::merge(Node*& t1, Node*& t2) {
-    std::cout << "in merge\n";
+void Treap<T>::merge(Node*& t1, Node*& t2, Node*& parent) {
+    std::cout << "IN MERGE!!!\n";
+    print_bst(this->head);
+    std::cout << "\n";
+
     if (!t1) {
-        return t2;
+        parent = t2;
+        parent->parent = nullptr;
+        return;
     }
     if (!t2) {
-        return t1;
+        parent = t1;
+        parent->parent = nullptr;
+        return;
     }
+    // if (parent) {
+    //     std::cout << "parent : " << parent->val << "\n";
+    // }
+    // std::cout << "t1 : " << t1->val << "\n";
+    // std::cout << "t2 : " << t2->val << "\n";
 
     if (t1->priority < t2->priority) {
-        t1->right = merge(t1->right, t2);
-        t1->update();
-        t1->right->parent = t1; // !!!!!!!!!!!!!!
-        std::cout << "t1 val : " << t1->val << "\n";
-        if (t1->right) {
-            std::cout << "t1 right val : " << t1->right->val << "\n";
-            std::cout << "t1 right parent : " << t1->right->parent->val << "\n";
+        if (parent) {
+            std::cout << "parent : " << parent->val << "\n";
         }
-        print_bst(head);
-        // t1->update();
-        std::cout << "\n";
-        return t1;
+        std::cout << "t1 : " << t1->val << "\n";
+
+        merge(t1->right, t2, t1->right);
+        
+
+        t1->update();
+        t1->right->parent = t1;
+        std::cout << "t1 right : " << t1->right->val << "\n";
+        std::cout << "t1 right parent: " << t1->right->parent->val << "\n";
+        parent = t1;
+        parent->parent = nullptr;
     }
     else {
-        t2->left = merge(t1, t2->left);
+        if (parent) {
+            std::cout << "parent : " << parent->val << "\n";
+        }
+        std::cout << "t2 : " << t2->val << "\n";
+        merge(t1, t2->left, t2->left);
         t2->update();
         t2->left->parent = t2;
-        std::cout << "t2 val : " << t2->val << "\n";
-        if (t2->left){
-            std::cout << "t2 left val : " << t2->left->val << "\n";
-            std::cout << "t2 left parent : " << t2->left->parent->val << "\n";
-        }
-        print_bst(head);
-        // t2->update();
-        std::cout << "\n";
-        return t2;
+        std::cout << "t2 left : " << t2->left->val << "\n";
+        std::cout << "t2 left parent: " << t2->left->parent->val << "\n";
+        parent = t2;
+        parent->parent = nullptr;
     }
 }
 
@@ -152,8 +165,11 @@ void Treap<T>::insert(T val, int pos) {
     Node* l, * r;
     split_by_size(head, pos - 1, l, r);
     Node* new_node = new Node(val);
-    Node* t1 = merge(l, new_node);
-    this->head = merge(t1, r);
+    Node* t1;
+    merge(l, new_node, t1);
+    Node* t2;
+    merge(t1, r, t2);
+    this->head = t2;
 }
 
 template <typename T>
@@ -163,7 +179,9 @@ void Treap<T>::erase(Treap<T>::Node* t, int pos) {
     Node* e, * rr;
     split_by_size(r, 1, e, rr);
     delete e;
-    this->head = merge(l, rr);
+    Node* h;
+    merge(l, rr, h);
+    this->head = h;
 }
 
 template <typename T>
@@ -187,7 +205,7 @@ void Treap<T>::print_bst(Treap<T>::Node* root) {
 
     T parent_val = T();
     if (root->parent) {
-        T parent_val = root->parent->val;
+        parent_val = root->parent->val;
     }
 
     std::cout << root->val << " (" << parent_val << ") ";
