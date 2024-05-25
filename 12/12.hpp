@@ -23,29 +23,26 @@ public:
         void update();
     };
 
-    // class Iterator {
-    //     private:
-    //         Node* curr_node;
-    //         std::vector<Node*> stack;
-        
-    //     public:
-    //         Iterator(Node* node) : curr_node(node) {
-    //             fill_stack(node);
-    //         }
+    class Iterator {
+        Node* curr_;
+    public:
+        Iterator(Node* ptr): curr_(ptr) { }
+        Iterator(const Iterator& other);
+        Iterator& operator=(const Iterator& other);
+        ~Iterator() { }
 
-    //         bool operator!=(Iterator const &other) {
-    //             return this->curr_node != other.curr_node;
-    //         }
-
-    //         T operator*() const {
-    //             return curr_node->val;
-    //         }
-
-    //         Iterator& operator++() {
-    //             curr_node = curr_node->successor(); // point to next node
-    //             return *this;
-    //         }
-    // };
+        // Iterator's operators
+        Node& operator*();
+        Node* operator->();
+        Iterator& operator++();
+        Iterator operator++(int);
+        friend bool operator==(const Iterator& first, const Iterator& second) {
+            return first.curr_ == second.curr_;
+        };
+        friend bool operator!=(const Iterator& first, const Iterator& second) {
+            return !(first == second);
+        }
+    };
 
     Treap();
     ~Treap();

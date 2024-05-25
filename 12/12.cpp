@@ -97,22 +97,16 @@ void Treap<T>::split_by_size(Node* t, int size, Node*& left, Node*& right) {
         split_by_size(t->left, size, left, t->left);
         t->update();
         right = t;
-        // t->parent = right; // !!!!!!!!!!!!!!!!!!!!!!
     }
     else {
         split_by_size(t->right, size - Node::get_size(t->left) - 1, t->right, right);
         t->update();
         left = t;
-        // t->parent = left; /// !!!!!!!!!!!!!!!!
     }
 }
 
 template <typename T>
 void Treap<T>::merge(Node*& t1, Node*& t2, Node*& parent) {
-    std::cout << "IN MERGE!!!\n";
-    print_bst(this->head);
-    std::cout << "\n";
-
     if (!t1) {
         parent = t2;
         parent->parent = nullptr;
@@ -123,41 +117,22 @@ void Treap<T>::merge(Node*& t1, Node*& t2, Node*& parent) {
         parent->parent = nullptr;
         return;
     }
-    // if (parent) {
-    //     std::cout << "parent : " << parent->val << "\n";
-    // }
-    // std::cout << "t1 : " << t1->val << "\n";
-    // std::cout << "t2 : " << t2->val << "\n";
 
     if (t1->priority < t2->priority) {
-        if (parent) {
-            std::cout << "parent : " << parent->val << "\n";
-        }
-        std::cout << "t1 : " << t1->val << "\n";
-
         merge(t1->right, t2, t1->right);
-        
-
         t1->update();
         t1->right->parent = t1;
-        std::cout << "t1 right : " << t1->right->val << "\n";
-        std::cout << "t1 right parent: " << t1->right->parent->val << "\n";
         parent = t1;
-        parent->parent = nullptr;
+        // parent->parent = nullptr;
     }
     else {
-        if (parent) {
-            std::cout << "parent : " << parent->val << "\n";
-        }
-        std::cout << "t2 : " << t2->val << "\n";
         merge(t1, t2->left, t2->left);
         t2->update();
         t2->left->parent = t2;
-        std::cout << "t2 left : " << t2->left->val << "\n";
-        std::cout << "t2 left parent: " << t2->left->parent->val << "\n";
         parent = t2;
-        parent->parent = nullptr;
+        // parent->parent = nullptr;
     }
+    parent->parent = nullptr;
 }
 
 template <typename T>
