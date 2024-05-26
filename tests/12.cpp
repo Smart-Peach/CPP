@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(TreapTest, Testing) {
+TEST(TreapTest, BiggerTree) {
     Treap<int> A = Treap<int>();
 
     A.insert(17, 1);
@@ -11,14 +11,36 @@ TEST(TreapTest, Testing) {
     A.insert(24, 4);
     A.insert(13, 5);
     A.insert(42, 6);
-    
-    A.print_bst(A.get_head());
 
-    std::cout << std::endl;
+    std::vector<int> expected = { 17, 99, 2, 24, 13, 42};
+    std::vector<int> actual;
+
     for (auto node : A) {
-        std::cout << node.val << std::endl;
+        actual.push_back(node.val);
     }
+
+    EXPECT_THAT(expected, actual);
 }
+
+TEST(TreapTest, Tree) {
+    Treap<int> A = Treap<int>();
+
+    A.insert(17, 1);
+    A.insert(99, 2);
+    A.insert(2, 3);
+    A.insert(24, 4);
+
+    std::vector<int> expected = { 17, 99, 2, 24};
+    std::vector<int> actual;
+
+    for (auto node : A) {
+        actual.push_back(node.val);
+    }
+
+    EXPECT_THAT(expected, actual);
+}
+
+
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
